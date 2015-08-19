@@ -7,13 +7,10 @@ systems({
     // Dependent systems
     depends: ['db'],
     // More images:  http://images.azk.io
-    image: {"docker": "azukiapp/php-fpm:5.6"},
+    image: { dockerfile: "./frontend/Dokerfile" },
     // Steps to execute before running instances
     provision: [
-      "composer install",
-      "php artisan migrate",
-      "npm install",
-      "node_modules/.bin/bower install --allow-root",
+      "php artisan migrate"
     ],
     workdir: "/azk/#{manifest.dir}/#{system.name}",
     shell: "/bin/bash",
