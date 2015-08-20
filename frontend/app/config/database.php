@@ -54,11 +54,14 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => (getenv('DB_1_PORT_3306_TCP_ADDR') ? getenv('DB_1_PORT_3306_TCP_ADDR') : '127.0.0.1'),
-			'port'		  => '3306',
-			'database'  => 'paperwork',
-			'username'  => 'paperwork',
-			'password'  => 'paperwork',
+      'host'      => (
+        getenv('MYSQL_HOST') ? getenv('MYSQL_HOST') :
+          (getenv('DB_1_PORT_3306_TCP_ADDR') ? getenv('DB_1_PORT_3306_TCP_ADDR') : '127.0.0.1')
+      ),
+      'port'      => (getenv('MYSQL_PORT') ? getenv('MYSQL_PORT') : '3306'),
+      'username'  => (getenv('MYSQL_USER') ? getenv('MYSQL_USER') : 'paperwork'),
+      'password'  => (getenv('MYSQL_PASSWORD') ? getenv('MYSQL_PASSWORD') : 'paperwork'),
+      'database'  => (getenv('MYSQL_DATABASE') ? getenv('MYSQL_DATABASE') : 'paperwork'),
 			'charset'   => 'utf8',
 			'collation' => 'utf8_general_ci',
 			'prefix'    => '',

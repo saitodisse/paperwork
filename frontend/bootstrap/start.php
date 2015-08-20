@@ -70,4 +70,8 @@ require $framework.'/Illuminate/Foundation/start.php';
 |
 */
 
+if (getenv("COMPOSER_ENV")) {
+  $env = $app->detectEnvironment(function() { return getenv("COMPOSER_ENV"); });
+}
+
 return $app;
