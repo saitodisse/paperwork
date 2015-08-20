@@ -1,12 +1,11 @@
+/* globals systems sync persistent */
+
 /**
- * Documentation: http://docs.azk.io/Azkfile.js
+ * see Azkfile.md for more info
  */
-// Adds the systems that shape your system
 systems({
   frontend: {
-    // Dependent systems
     depends: ['db'],
-    // More images:  http://images.azk.io
     image: { docker: "azukiapp/php-fpm:5.6" },
     // Steps to execute before running instances
     provision: [
@@ -39,7 +38,10 @@ systems({
     },
     scalable: {"default": 1},
     http: {
-      domains: [ "paperwork.#{azk.default_domain}" ]
+      domains: [
+        "paperwork.#{azk.default_domain}", // default azk
+        "#{process.env.AZK_HOST_IP}"       // used if deployed
+      ]
     },
     ports: {
       // exports global variables
@@ -78,5 +80,43 @@ systems({
       MYSQL_PASSWORD: "#{envs.MYSQL_PASS}",
       MYSQL_DATABASE: "#{envs.MYSQL_DATABASE}",
     },
+  },
+
+  deploy: {
+    image: {"docker": "azukiapp/deploy-digitalocean"},
+    mounts: {
+
+      // your files on remote machine
+      // will be on /home/git folder
+      "/azk/deploy/src":  path("."),
+
+      // will use your public key on server
+      // that way you can connect with:
+      // $ ssh git@REMOTE.IP
+      // $ bash
+      "/azk/deploy/.ssh": path("#{process.env.HOME}/.ssh")
+    },
+
+    // this is not a server
+    // just call with azk shell deploy
+    scalable: {"default": 0, "limit": 0},
+
+    envs: {
+      GIT_CHECKOUT_COMMIT_BRANCH_TAG: 'azkfile',
+      AZK_RESTART_COMMAND: 'azk restart -Rvv',
+      RUN_SETUP: 'true',
+      RUN_CONFIGURE: 'true',
+      RUN_DEPLOY: 'true',
+    }
+  },
+  "fast-deploy": {
+    extends: 'deploy',
+    envs: {
+      GIT_CHECKOUT_COMMIT_BRANCH_TAG: 'azkfile',
+      AZK_RESTART_COMMAND: 'azk restart -Rvv',
+      RUN_SETUP: 'false',
+      RUN_CONFIGURE: 'false',
+      RUN_DEPLOY: 'true',
+    }
   },
 });
