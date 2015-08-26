@@ -17,6 +17,22 @@ App::missing(function ($exception) {
     return Response::view('404', array(), 404);
 });
 
+if(File::exists("setup")) {
+    Route::get('{all}', ["as" => "setup/installer", "uses" => "SetupController@showInstallerPage"])->where('all', '.*');
+    Route::post('/install/checkdb', ["as" => "install/checkdb", "uses" => "SetupController@setupDatabase"]);
+    Route::post('/install/finish', ["as" => "install/finish", "uses" => "SetupController@finishSetup"]);
+    Route::post("/install/registeradmin", ["as" => "install/registeradmin", "uses" => "UserController@register"]);
+    //Run Laravel Commands after Setup
+    /*Route::post('/app/install', array( 'as' => 'app/install', function() {
+	   $result =  Artisan::call('app:install');
+	   if ($result == 0 ) {
+		  echo '{"status" : "success"}';
+	   } else {
+		  echo '{"status" : "error"}';
+	   }
+    }));*/
+}
+
 Route::get('/login', ["as" => "user/login", "uses" => "UserController@showLoginForm"]);
 Route::post('/login', ["as" => "user/login", "uses" => "UserController@login"]);
 
