@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%">
     <head>
         @include('partials/header-sidewide-meta')
         [[ HTML::style('css/themes/paperwork-v1.min.css') ]]
+        <style>
+            #step1, #step2, #step3, #step4, #step5 {
+                /*position: absolute;*/
+                height: 100%;
+                /*background: red;*/
+                width: 100%;
+                min-height: 100%;
+                text-align: center;
+            }
+            #step1_submit, #step2_submit, #step3_submit, #step4_submit, #step5_submit {
+                position: absolute;
+                bottom: 30px;
+                width: 97%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
     </head>
-    <body>
+    <body style="height:100%">
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -14,8 +31,9 @@
                 </div>
             </div>
         </div>
+        <div id="progress_bar" style="width:0%;background:#03A9F4;height:5px"></div>
         <div class="container-fluid" id="step1">
-            <h1>Check if this is latest release</h1>
+            <h1>Checking for newer releases</h1>
             <?php
                 list($lastCommitOnInstall, $upstreamLatest, $lastCommitTimestamp, $upstreamTimestamp) = PaperworkHelpers::getHashes();
             ?>
@@ -28,21 +46,21 @@
             @elseif(strtotime($lastCommitTimestamp) > strtotime($upstreamTimestamp))
                 <p>It seems like you have done some changes to the Paperwork code. Before opening a new issue, please check if this issue is present in the official source code available in our Github repository. </p>
             @else
-                <p>It seems like thisis not the latest version of Paperwork. Please consider installing a newer version. </p>
+                <p>It seems like this is not the latest version of Paperwork. Please consider installing a newer version. </p>
             @endif
             <button type="button" id="step1_submit" class="btn btn-lg btn-primary btn-block">Next</button>
         </div> <!-- page 1 (update check) -->
         <div class="container-fluid hidden" id="step2">
-            <h1>Checking all composer dependencies are installed...</h1>
+            <h1>Checking composer dependencies</h1>
             <button type="button" id="step2_submit" class="btn btn-lg btn-primary btn-block">Next</button>
         </div> <!-- page 2 (dependency check - composer) -->
         <div class="container-fluid hidden" id="step3">
-            <h1>Check all npm dependencies are installed...</h1>
+            <h1>Checking npm dependencies</h1>
             <button type="button" id="step3_submit" class="btn btn-lg btn-primary btn-block">Next</button>
         </div> <!-- page 3 (dependency check - npm) -->
         <div class="container-fluid hidden" id="step4">
             <!-- TODO: Check if mysql is installed -->
-            <h1>Check if mysql is running and is correct</h1>
+            <h1>Checking Database Connection</h1>
         </div> <!-- page 4 (database options) -->
         <div class="container-fluid hidden" id="step5">
             <div id="registration_error" class="hidden">
@@ -50,10 +68,11 @@
             </div>
             @include("partials/registration-form", array('back' => false, 'frominstaller' => true))
         </div> <!-- page 5 (first user registration) -->
-        <div style="height:25px;position:fixed;bottom:0;width:100%">
+        <!--
+        <div style="height:25px;position:fixed;bottom:0;width:100%;padding:0 5px;">
             <span style="height:15px;width:100%">Installing and configuring Paperwork...</span><br>
             <span id="progress_bar" style="width:0%;background-color:red;height:5px;margin-bottom:5px;position:fixed"></span>
-        </div> <!-- progress bar -->
+        </div>--> <!-- progress bar -->
         [[ HTML::script('js/jquery.min.js') ]]
         [[-- HTML::script('js/bootstrap.min.js') --]]
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -91,6 +110,14 @@
                             console.log("test");
                             $("#step4").removeClass("hidden");
                             $("#progress_bar").width("60%");
+                            $("#step4_submit").click(function() {
+                                $("#step4").fadeOut("slow", function() {
+                                    $("#step4").addClass("hidden");
+                                    $("#step5").removeClass("hidden");
+                                    $("#progress_bar").width("80%");
+                                    //return false;
+                                });
+                            });
                         },
                         error: function() {
                             alert("Error");
@@ -99,48 +126,16 @@
                     return false;
                 });
             });
+            /*
             $("#step4_submit").click(function() {
-                /*var dbserver = $("input#dbserver").val();
-                var dbuser = $("input#dbusername").val();
-                var dbpassword = $("input#dbpassword").val();
-                var dataString = 
-                    'dbserver=' + dbserver + '&dbusername=' + dbusername + '&dbpassword=' + dbpassword;
-                $.ajax({
-                    type: "POST",
-                    url: "install/checkdb",
-                    data: dataString,
-                    success: function() {
-                        $("#step4").fadeOut("slow", function() {
-                            $("#step4").addClass("hidden");
-                            $("#step5").removeClass("hidden");
-                            $("#progress_bar").width("80%");
-                        });
-                    }
-                });*/
-                //return false;
- /*               var data = "";
-                $.ajax({
-                    type: "POST",
-                    url: "install/checkdb",
-                    data: data,
-                    success: function() {
-                        $("#step4").fadeOut("slow", function() {
-                            $("#step4").addClass("hidden");
-                            $("#step5").removeClass("hidden");
-                            $("#progress_bar").width("80%");
-                        });
-                    },
-                    error: function() {
-                        alert("Error");
-                    }
-                });
-                return false;*/
                 $("#step4").fadeOut("slow", function() {
                     $("#step4").addClass("hidden");
                     $("#step5").removeClass("hidden");
                     $("#progress_bar").width("80%");
+                    return false;
                 });
-          });
+            });
+            */
             $("#step5_submit").click(function() {
                 $("#step5").fadeOut("slow", function() {
                     $("#step5").addClass("hidden");
