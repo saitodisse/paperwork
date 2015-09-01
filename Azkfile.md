@@ -4,7 +4,7 @@
 
 ### Habitica (HabitRPG) (default)
 
-- frontend
+- paperwork
 - db
 
 ```sh
