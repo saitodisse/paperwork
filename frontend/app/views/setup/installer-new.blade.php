@@ -24,6 +24,8 @@
                 position: absolute;
                 bottom: 5%;
                 right: 5%;
+                left: 5%;
+                width:100%;
             }
         </style>
     </head>
@@ -38,7 +40,7 @@
                 </div>
             </div>
         </div>
-        <div style="left:0;right:0;z-index:1;display:block;width:100;height:100%;overflow:hidden"> <!-- wizard -->
+        <div style="left:0;right:0;z-index:1;display:block;width:100%;height:100%;/*overflow:hidden*/"> <!-- wizard -->
             <div style="height:10px"> <!-- progress container -->
                 <div style="width:0;background:red;"><!-- progress bar --></div>
             </div>
@@ -47,7 +49,7 @@
                     <div class="inner cover" style="padding:30px;padding:20px 60px;">
                         <div class="centerUp" style="max-width:750px;margin:0 auto">
                             <div class="questionnaire">
-                                <ul class="form" style="position:relative;margin:0px;padding:0px;min-height:500px">
+                                <ul class="form text-center" style="position:relative;margin:0px;padding:0px;min-height:500px">
                                     <li class="form-group">
                                         <h1>Checking for updates</h1>
                                         <?php
@@ -63,9 +65,9 @@
                                             <p>It seems like you have done some changes to the Paperwork code. Before opening a new issue, please check if this issue is present in the official source code available in our Github repository. </p>
                                         @else
                                             <p>It seems like thisis not the latest version of Paperwork. Please consider installing a newer version. </p>
-                                            <button class="btn btn-default btn-lg next_step" style="left: 5% !important">Update</button>
+                                            <button class="btn btn-default btn-lg next_step" style="left: 5% !important;right: 5% !important;width:100%; bottom:25%;" id="update_button">Update</button>
                                         @endif
-                                        <button class="btn btn-primary btn-lg next_step">Next</button>
+                                        <button class="btn btn-primary btn-lg next_step" id="step1">Next</button>
                                     </li>
                                     <li class="form-group hidden">
                                         <h1>Setting up the database</h1>
@@ -81,23 +83,23 @@
                                                 </form>
                                             </div>
                                         </div>
-                                        <button class="btn btn-primary btn-lg next_step">Next</button>
+                                        <button class="btn btn-primary btn-lg next_step" id="step2">Next</button>
                                     </li>
                                     <li class="form-group hidden">
                                         <h1>Configurating</h1>
                                         <!-- 
                                         disabled form with all config values and with a change link 
                                         -->
-                                        <button class="btn btn-primary btn-lg next_step">Next</button>
+                                        <button class="btn btn-primary btn-lg next_step" id="step3">Next</button>
                                     </li>
                                     <li class="form-group hidden">
                                         <h1>Registerign your first user account</h1>
                                         <p>This account will serve as the administrator. </p>
-                                        <button class="btn btn-primary btn-lg next_step">Next</button>
+                                        <button class="btn btn-primary btn-lg next_step" id="step4">Next</button>
                                     </li>
                                     <li class="form-group hidden">
                                         <h1>Installation completed</h1>
-                                        <button class="btn btn-primary btn-lg next_step">Proceed to Paperwork</button>
+                                        <button class="btn btn-primary btn-lg next_step" id="step5">Proceed to Paperwork</button>
                                     </li>
                                 </ul>
                             </div>
@@ -106,5 +108,25 @@
                 </div>
             </div>
         </div>
+        [[ HTML::script('js/jquery.min.js') ]]
+        <script type="text/javascript">
+            $(".next_step").click(function(event) {
+                console.log(event);
+                console.log(event.currentTarget);
+                if($(event.currentTarget).hasClass("btn-primary")) {
+                    var currentStep = parseInt(event.currentTarget.id.replace("step", ""), 10) - 1;
+                    console.log(currentStep);
+                    var nextStep = currentStep + 1;
+                    console.log(nextStep);
+                    $("ul.form li").eq(currentStep).fadeOut("slow");
+                    console.log($("ul.form li").eq(currentStep));
+                    $("ul.form li").eq(currentStep).addClass("hidden");
+                    $("ul.form li").eq(nextStep).removeClass("hidden");
+                    $("ul.form li").eq(nextStep).fadeIn("slow");
+                }else if(event.currentTarget.id === "update_button") {
+                    alert("Coming Soon");
+                }
+            });
+        </script>
     </body>
 </html>
