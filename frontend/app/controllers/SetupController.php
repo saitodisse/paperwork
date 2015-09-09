@@ -15,6 +15,16 @@ class SetupController extends BaseController {
         return PaperworkHelpers::apiResponse($response, array());
     }
     
+    public function setupDatabase() {
+        // Create file to hold info
+        // Save File
+        // (One-time) Update database config file to use saved values
+        // Open connection
+        // Check if any errors occurred
+        // If true, send error response 
+        // If false, send success response 
+    }
+    
 /*    public function showInstallerPage() {
         return View::make('setup/installer');
     }

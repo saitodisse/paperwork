@@ -162,6 +162,23 @@
             });
             $("#connection_check").click(function() {
                 // Run AJAX - TODO
+                event.preventDefault();
+                var user = $("#inputUser").val();
+                var pass = $("#inputPassword").val();
+                var server = $("#inputServer").val();
+                var dataString = "_token="+token+"&username="+user+"&password="+pass+"&server="+server;
+                console.log(dataString);
+                $.ajax({
+                    type: "POST",
+                    url: "install/checkdb",
+                    data: dataString,
+                    success: function() {
+                        alert("Good credentials");
+                    },
+                    error: function() {
+                        alert("Fix credentials");
+                    }
+                });
             });
             $("#step5_submit").click(function(event) {
                 event.preventDefault();
