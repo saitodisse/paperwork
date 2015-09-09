@@ -24,8 +24,8 @@ if(!File::exists(storage_path()."/settings/database")) {
 if(File::exists(storage_path()."/setup")) {
     Route::get('{all}', ["as" => "setup/installer", "uses" => "SetupController@showInstallerPage"])->where('all', '.*');
     //Route::post('/install/checkdb', ["as" => "install/checkdb", "uses" => "SetupController@setupDatabase"]);
-    //Route::post('/install/finish', ["as" => "install/finish", "uses" => "SetupController@finishSetup"]);
-    //Route::post("/install/registeradmin", ["as" => "install/registeradmin", "uses" => "UserController@register"]);
+    Route::post('/install/finish', ["as" => "install/finish", "uses" => "SetupController@finishSetup"]);
+    Route::post("/install/registeradmin", ["as" => "install/registeradmin", "uses" => "UserController@register"]);
 }else{
     Route::get('/login', ["as" => "user/login", "uses" => "UserController@showLoginForm"]);
     Route::post('/login', ["as" => "user/login", "uses" => "UserController@login"]);

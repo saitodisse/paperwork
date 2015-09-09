@@ -151,15 +151,49 @@
                 }else if(event.currentTarget.id === "update_button") {
                     alert("Coming Soon");
                 }else if(event.target.id === "step5") {
-                    // Run AJAX - Delete Setup file - TODO
-                    window.location.href = "/login";
+                    $.ajax({
+                        type: "POST",
+                        url: "install/finish",
+                        finished: function() {
+                            window.location.href = "/login";
+                        }
+                    });
                 }
             });
             $("#connection_check").click(function() {
                 // Run AJAX - TODO
             });
-            $("#step5_submit").click(function() {
-                // Run AJAX - TODO
+            $("#step5_submit").click(function(event) {
+                event.preventDefault();
+                var token = $("[name='_token']").val();
+                var user = $("[name='username']").val();
+                var name = $("[name='firstname']").val();
+                var lastname = $("[name='lastname']").val();
+                var pass = $("[name='password']").val();
+                var confirm = $("[name='password_confirmation']").val();
+                var lang = $("#ui_language").val(); 
+                var dataString = 
+                    "_token="+token+"&username="+user+"&firstname="+name+"&lastname="+
+                    lastname+"&password="+pass+"&password_confirmation="+confirm
+                    +"&ui_language="+lang+"&frominstaller=1";
+                console.log(dataString);
+                $.ajax({
+                    type: "POST",
+                    url: "install/registeradmin",
+                    data: dataString,
+                    success: function() {
+                        var currentStep = 4 - 1;
+                        console.log(currentStep);
+                        var nextStep = currentStep + 1;
+                        console.log(nextStep);
+                        $("ul.form li").eq(currentStep).fadeOut("slow");
+                        console.log($("ul.form li").eq(currentStep));
+                        $("ul.form li").eq(currentStep).addClass("hidden");
+                        $("ul.form li").eq(nextStep).removeClass("hidden");
+                        $("ul.form li").eq(nextStep).fadeIn("slow");
+                        $("#progress_bar").css("width", ((nextStep / 5) * 100) + "%");
+                    }
+                });
             });
         </script>
     </body>

@@ -5,6 +5,16 @@ class SetupController extends BaseController {
         return View::make("setup/installer-new");
     }
     
+    public function finishSetup() {
+        File::delete(storage_path()."/setup");
+        if(!File::exists(storage_path()."/setup")) {
+            $response = PaperworkHelpers::STATUS_SUCCESS;
+        }else{
+            $response = PaperworkHelpers::STATUS_ERROR;
+        }
+        return PaperworkHelpers::apiResponse($response, array());
+    }
+    
 /*    public function showInstallerPage() {
         return View::make('setup/installer');
     }
