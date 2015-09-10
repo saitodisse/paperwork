@@ -10,6 +10,7 @@ if(File::exists(storage_path()."/db_settings")) {
     $databaseInfo = explode(", ", $wholeString);
 }else{
     $databaseInfo = array("mysql", (getenv('DB_1_PORT_3306_TCP_ADDR') ? getenv('DB_1_PORT_3306_TCP_ADDR') : '127.0.0.1'), "3306", "paperwork", "paperwork");
+    $databaseInfo = array("sqlite", ":memory:");
 }
 
 return array(
@@ -60,7 +61,7 @@ return array(
 
 		'sqlite' => array(
 			'driver'   => 'sqlite',
-			'database' => __DIR__.'/../database/production.sqlite',
+			'database' => ($databaseInfo[1] !== ":memory:") ? __DIR__.'/../database/production.sqlite' : ':memory:',
 			'prefix'   => '',
 		),
 
@@ -68,7 +69,7 @@ return array(
 			'driver'    => 'mysql',
 			'host'      => isset($databaseInfo[1]) ? $databaseInfo[1] : (getenv('DB_1_PORT_3306_TCP_ADDR') ? getenv('DB_1_PORT_3306_TCP_ADDR') : '127.0.0.1'),
 			'port'		=> isset($databaseInfo[2]) ? $databaseInfo[2] : '3306',
-			'database'  => 'paperwork',
+			'database'  => (File::exists(storage_path()."/db_settings")) ? 'paperwork' : '',
 			'username'  => isset($databaseInfo[3]) ? $databaseInfo[3] : 'paperwork',
 			'password'  => isset($databaseInfo[4]) ? $databaseInfo[4] : 'paperwork',
 			'charset'   => 'utf8',

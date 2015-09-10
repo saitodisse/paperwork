@@ -81,7 +81,7 @@
                                                 <form class="form-horizontal">
                                                     <div class="form-group">
                                                         <div id="connection_id_success" class="hidden" style="height:15px;background:green;">Credentials correct</div>
-                                                        <div id="connection_id_failure" class="hidden" style="15px;background:red">Credentials not correct</div>
+                                                        <div id="connection_id_failure" class="hidden" style="15px;background:red">Credentials not correct. Please delete db_settings file in storage directory and try again. </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="inputServer" class="col-sm-2 control-label">Server</label>
