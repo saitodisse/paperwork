@@ -71,18 +71,28 @@
                                     </li>
                                     <li class="form-group hidden">
                                         <h1>Setting up the database</h1>
-                                        <div style="width:48%;height:100%;float:left;argin-right:10px"> <!--- first drop down - dbms choice -->
-                                            <a style="padding:20px 0;display:block">MySQL <span class="caret"></span></a><br>
-                                            <a style="padding:20px 0;display:block;font-style:italic;background:#CCCCCC">Choice 2 <span class="caret"></span></a>
+                                        <div style="width:48%;height:100%;float:left;margin-right:10px"> <!--- first drop down - dbms choice -->
+                                            <a class="database_links" style="padding:20px 0;display:block">MySQL <span class="caret"></span></a><br>
+                                            <a class="database_links" style="padding:20px 0;display:block;font-style:italic;background:#CCCCCC">Choice 2 <span class="caret"></span></a>
                                         </div>
                                         <div style="width:50%;height:100%;float:left;"> <!-- second drop down - requirements and credentials form -->
                                             <div>
                                                 <p>Requirements: ...</p> 
                                                 <form class="form-horizontal">
                                                     <div class="form-group">
+                                                        <div id="connection_id_success" class="hidden" style="height:15px;background:green;">Credentials correct</div>
+                                                        <div id="connection_id_failure" class="hidden" style="15px;background:red">Credentials not correct</div>
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label for="inputServer" class="col-sm-2 control-label">Server</label>
                                                         <div class="col-sm-10">
                                                             <input type="text" class="form-control" id="inputServer" placeholder="Server">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputPort" class="col-sm-2 control-label">Port</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="number" class="form-control" id="inputPort" placeholder="Port">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -94,7 +104,7 @@
                                                     <div class="form-group">
                                                         <label for="inputPassword" class="col-sm-2 control-label">Password</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" class="form-control" id="inputPassword" placeholder="Password">
+                                                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -134,6 +144,15 @@
         </div>
         [[ HTML::script('js/jquery.min.js') ]]
         <script type="text/javascript">
+            var driver = "mysql";
+            $(".database_links").click(function(event) {
+                driver = ((event.currentTarget.innerText).trim()).toLowerCase();
+                console.log(driver);
+                if(driver === "choice 2") {
+                    driver = "mysql";
+                    alert("New Database Options - Coming Soon");
+                }
+            });
             $(".next_step").click(function(event) {
                 console.log(event);
                 console.log(event.currentTarget);
@@ -163,10 +182,13 @@
             $("#connection_check").click(function() {
                 // Run AJAX - TODO
                 event.preventDefault();
+                //var driver = "mysql";
                 var user = $("#inputUser").val();
                 var pass = $("#inputPassword").val();
                 var server = $("#inputServer").val();
-                var dataString = "_token="+token+"&username="+user+"&password="+pass+"&server="+server;
+                //var token = "";
+                var port = $("#inputPort").val();
+                var dataString = /*"_token="+token+"&*/"username="+user+"&password="+pass+"&server="+server+"&driver="+driver+"&port="+port;
                 console.log(dataString);
                 $.ajax({
                     type: "POST",
@@ -174,9 +196,13 @@
                     data: dataString,
                     success: function() {
                         alert("Good credentials");
+                        $("#connection_id_success").removeClass("hidden");
+                        $("#connection_id_failure").addClass("hidden");
                     },
                     error: function() {
                         alert("Fix credentials");
+                        $("#connection_id_failure").removeClass("hidden");
+                        $("#connection_id_success").addClass("hidden");
                     }
                 });
             });

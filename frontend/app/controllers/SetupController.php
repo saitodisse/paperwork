@@ -16,13 +16,23 @@ class SetupController extends BaseController {
     }
     
     public function setupDatabase() {
+        // Create credentials string
+        $string = Input::get("driver") . ", " . Input::get("server") . ", " . Input::get("port") . ", " . Input::get("username") . ", " . Input::get("password");
         // Create file to hold info
         // Save File
-        // (One-time) Update database config file to use saved values
+        File::put(storage_path()."/db_settings", $string);
         // Open connection
         // Check if any errors occurred
         // If true, send error response 
         // If false, send success response 
+        if(DB::connection()->getDatabaseName()) {
+            $response = PaperworkHelpers::STATUS_SUCCESS;
+        }else{
+            $response = PaperworkHelpers::STATUS_NOTFOUND;
+        }
+        //DB::disconnect();
+        
+        return PaperworkHelpers::apiResponse($response, array());
     }
     
 /*    public function showInstallerPage() {

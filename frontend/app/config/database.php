@@ -1,5 +1,17 @@
 <?php
 
+/*
+| ----------------------------------------------------------------------------
+| Include Database Details From File
+| ----------------------------------------------------------------------------
+*/
+if(File::exists(storage_path()."/db_settings")) {
+    $wholeString = file_get_contents(storage_path()."/db_settings");
+    $databaseInfo = explode(", ", $wholeString);
+}else{
+    $databaseInfo = array("mysql", (getenv('DB_1_PORT_3306_TCP_ADDR') ? getenv('DB_1_PORT_3306_TCP_ADDR') : '127.0.0.1'), "3306", "paperwork", "paperwork");
+}
+
 return array(
 
 	/*
@@ -26,7 +38,7 @@ return array(
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => isset($databaseInfo[0]) ? $databaseInfo[0] : 'mysql',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,11 +66,11 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => (getenv('DB_1_PORT_3306_TCP_ADDR') ? getenv('DB_1_PORT_3306_TCP_ADDR') : '127.0.0.1'),
-			'port'		  => '3306',
+			'host'      => isset($databaseInfo[1]) ? $databaseInfo[1] : (getenv('DB_1_PORT_3306_TCP_ADDR') ? getenv('DB_1_PORT_3306_TCP_ADDR') : '127.0.0.1'),
+			'port'		=> isset($databaseInfo[2]) ? $databaseInfo[2] : '3306',
 			'database'  => 'paperwork',
-			'username'  => 'paperwork',
-			'password'  => 'paperwork',
+			'username'  => isset($databaseInfo[3]) ? $databaseInfo[3] : 'paperwork',
+			'password'  => isset($databaseInfo[4]) ? $databaseInfo[4] : 'paperwork',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_general_ci',
 			'prefix'    => '',
