@@ -109,7 +109,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="col-sm-12">
-                                                            <button class="btn btn-default" id="connection_check">Check Connection</button>
+                                                            <button class="btn btn-default" id="connection_check">Check Connection and Install Database</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -198,6 +198,18 @@
                         alert("Good credentials");
                         $("#connection_id_success").removeClass("hidden");
                         $("#connection_id_failure").addClass("hidden");
+                        setTimeout(function() {
+                            var currentStep = 2 - 1;
+                            console.log(currentStep);
+                            var nextStep = currentStep + 1;
+                            console.log(nextStep);
+                            $("ul.form li").eq(currentStep).fadeOut("slow");
+                            console.log($("ul.form li").eq(currentStep));
+                            $("ul.form li").eq(currentStep).addClass("hidden");
+                            $("ul.form li").eq(nextStep).removeClass("hidden");
+                            $("ul.form li").eq(nextStep).fadeIn("slow");
+                            $("#progress_bar").css("width", ((nextStep / 5) * 100) + "%");
+                        }, 2000);
                     },
                     error: function() {
                         alert("Fix credentials");

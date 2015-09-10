@@ -17,7 +17,7 @@ App::missing(function ($exception) {
     return Response::view('404', array(), 404);
 });
 
-if(!File::exists(storage_path()."/settings/database")) {
+if(!File::exists(storage_path()."/db_settings")) {
     File::put(storage_path()."/setup", "");
 }
 

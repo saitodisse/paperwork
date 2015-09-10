@@ -31,6 +31,8 @@ class SetupController extends BaseController {
         // If false, send success response 
         if(DB::connection()->getDatabaseName()) {
             $response = PaperworkHelpers::STATUS_SUCCESS;
+            define('STDIN',fopen("php://stdin","r"));
+            Artisan::call("migrate", ['--quiet' => true, '--force' => true]);
         }else{
             $response = PaperworkHelpers::STATUS_NOTFOUND;
             //File::delete(storage_path()."/db_settings");
