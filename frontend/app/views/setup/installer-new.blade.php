@@ -27,6 +27,52 @@
                 left: 5%;
                 width:100%;
             }
+            .toggle_button {
+                position: absolute;
+                margin-left: -9999px;
+                visibility: hidden;
+            }
+            .toggle_button + label {
+                display: block;
+                position: relative;
+                cursor: pointer;
+                outline: none;
+                user-select: none;
+            }
+            input.toggle_button + label {
+                padding: 2px;
+                width: 90px;;
+                height: 45px;
+                background-color: #DDDDDD;
+                border-radius: 45px;
+            }
+            input.toggle_button + label:before, input.toggle_button + label:after {
+                display: block;
+                position: absolute;
+                top: 1px;
+                left: 1px;
+                bottom: 1px;
+                content: "";
+            }
+            input.toggle_button + label:before {
+                right: 1px;
+                background-color: #F1F1F1;
+                border-radius: 45px;
+                transition: background 0.4s;
+            }
+            input.toggle_button + label:after {
+                width: 43.5px;
+                background-color: #FFFFFF;
+                border-radius: 100%;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+                transition: margin 0.4s;
+            }
+            input.toggle_button:checked + label:before {
+                background-color: #8CE196;
+            }
+            input.toggle_button:checked + label:after {
+                margin-left: 45px;
+            }
         </style>
     </head>
     
@@ -122,6 +168,74 @@
                                         <!-- 
                                         disabled form with all config values and with a change link 
                                         -->
+                                        <div>
+                                            <div class="row">
+                                                <h2 style="">Default Configuration Settings</h2>
+                                                <a id="change_config" style="float:right">Change</a>
+                                            </div>
+                                            <div>    
+                                                <div class="row">
+                                                    <div class="col-md-9">
+                                                        <h3>Debug Mode</h3>
+                                                        <p>Help Text</p>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        read only checkbox
+                                                    </div>
+                                                    <div class="hidden col-md-3">
+                                                        <div>
+                                                            <input id="toggle_btn_4" type="checkbox" class="toggle_button">
+                                                            <label id="toggle_label_4" for="toggle_btn_4"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-9">
+                                                        <h3>Registrations</h3>
+                                                        <p>Help Text</p>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        read only checkbox
+                                                    </div>
+                                                    <div class="col-md-3 hidden">
+                                                        <div>
+                                                            <input id="toggle_btn_3" type="checkbox" class="toggle_button">
+                                                            <label id="toggle_label_3" for="toggle_btn_3"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-9">
+                                                        <h3>Enable Forgot Password</h3>
+                                                        <p>Help Text</p>
+                                                    </div>
+                                                    <div class="col-md-3 hidden">
+                                                        read only checkbox
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div>
+                                                            <input id="toggle_btn_2" type="checkbox" class="toggle_button">
+                                                            <label id="toggle_label_2" for="toggle_btn_2"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-9">
+                                                        <h3>Show Issue Reporting Link</h3>
+                                                        <p>Help Text</p>
+                                                    </div>
+                                                    <div class="col-md-3 hidden">
+                                                        read only checkbox
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div>
+                                                            <input id="toggle_btn_1" type="checkbox" class="toggle_button">
+                                                            <label id="toggle_label_1" for="toggle_btn_1"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <button class="btn btn-primary btn-lg next_step" id="step3">Next</button>
                                     </li>
                                     <li class="form-group hidden">
