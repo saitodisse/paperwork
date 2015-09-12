@@ -43,6 +43,32 @@ class SetupController extends BaseController {
         return PaperworkHelpers::apiResponse($response, array());
     }
     
+    public function configurate() {
+        //Create settings string 
+        $string = "";
+        if(Input::get("debug") !== Config::get("app.debug")) {
+            $string .= "debug: " . Input::get("debug") . "\r\n";
+        }
+        if(Input::get("registration") !== Config::get("paperwork.registration")) {
+            $string .= "registration: " . Input::get("registration") . "\r\n";
+        }
+        if(Input::get("forgot_password") !== Config::get("paperwork.forgot_password")) {
+            $string .= "forgot_password: " . Input::get("forgot_password") . "\r\n";
+        }
+        if(Input::get("showIssueReportingLink") !== Config::get("paperwork.showIssueReportingLink")) {
+            $string .= "showIssueReportingLink: " . Input::get("showIssueReportingLink") . "\r\n";
+        }
+        File::put(storage_path()."/paperwork_settings", $string);
+        
+        if(file::exists(storage_path()."/paperwork_settings")) {
+            $response = PaperworkHelpers::STATUS_SUCCESS;
+        }else{
+            $response = PaperworkHelpers::STATUS_NOTFOUND;
+        }
+        
+        return PaperworkHelpers::apiResponse($response, array());
+    }
+    
 /*    public function showInstallerPage() {
         return View::make('setup/installer');
     }

@@ -27,52 +27,6 @@
                 left: 5%;
                 width:100%;
             }
-            .toggle_button {
-                position: absolute;
-                margin-left: -9999px;
-                visibility: hidden;
-            }
-            .toggle_button + label {
-                display: block;
-                position: relative;
-                cursor: pointer;
-                outline: none;
-                user-select: none;
-            }
-            input.toggle_button + label {
-                padding: 2px;
-                width: 90px;;
-                height: 45px;
-                background-color: #DDDDDD;
-                border-radius: 45px;
-            }
-            input.toggle_button + label:before, input.toggle_button + label:after {
-                display: block;
-                position: absolute;
-                top: 1px;
-                left: 1px;
-                bottom: 1px;
-                content: "";
-            }
-            input.toggle_button + label:before {
-                right: 1px;
-                background-color: #F1F1F1;
-                border-radius: 45px;
-                transition: background 0.4s;
-            }
-            input.toggle_button + label:after {
-                width: 43.5px;
-                background-color: #FFFFFF;
-                border-radius: 100%;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-                transition: margin 0.4s;
-            }
-            input.toggle_button:checked + label:before {
-                background-color: #8CE196;
-            }
-            input.toggle_button:checked + label:after {
-                margin-left: 45px;
-            }
         </style>
     </head>
     
@@ -179,14 +133,11 @@
                                                         <h3>Debug Mode</h3>
                                                         <p>Help Text</p>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        read only checkbox
+                                                    <div id="debug_non_editable" class="col-md-3">
+                                                        <input type="checkbox" disabled="disabled" @if (Config::get('app.debug')) checked="checked" @endif>   
                                                     </div>
-                                                    <div class="hidden col-md-3">
-                                                        <div>
-                                                            <input id="toggle_btn_4" type="checkbox" class="toggle_button">
-                                                            <label id="toggle_label_4" for="toggle_btn_4"></label>
-                                                        </div>
+                                                    <div id="debug_editable" class="hidden col-md-3">
+                                                        <input type="checkbox" id="debug_mode_switch" @if (Config::get('app.debug')) checked="checked" @endif>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -194,14 +145,11 @@
                                                         <h3>Registrations</h3>
                                                         <p>Help Text</p>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        read only checkbox
+                                                    <div id="registration_non_editable" class="col-md-3">
+                                                        <input type="checkbox" disabled="disabled" @if (Config::get('paperwork.registration')) checked="checked" @endif>
                                                     </div>
-                                                    <div class="col-md-3 hidden">
-                                                        <div>
-                                                            <input id="toggle_btn_3" type="checkbox" class="toggle_button">
-                                                            <label id="toggle_label_3" for="toggle_btn_3"></label>
-                                                        </div>
+                                                    <div id="registration_editable" class="col-md-3 hidden">
+                                                        <input type="checkbox" id="registration_config_switch" @if (Config::get('paperwork.registration')) checked="checked" @endif>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -209,14 +157,11 @@
                                                         <h3>Enable Forgot Password</h3>
                                                         <p>Help Text</p>
                                                     </div>
-                                                    <div class="col-md-3 hidden">
-                                                        read only checkbox
+                                                    <div id="forgot_password_non_editable" class="col-md-3">
+                                                        <input type="checkbox" disabled="disabled" @if (Config::get('paperwork.forgot_password')) checked="checked" @endif>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <div>
-                                                            <input id="toggle_btn_2" type="checkbox" class="toggle_button">
-                                                            <label id="toggle_label_2" for="toggle_btn_2"></label>
-                                                        </div>
+                                                    <div id="forgot_password_editable" class="col-md-3 hidden">
+                                                        <input type="checkbox" id="forgot_password_switch" @if (Config::get('paperwork.forgot_password')) checked="checked" @endif>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -224,14 +169,11 @@
                                                         <h3>Show Issue Reporting Link</h3>
                                                         <p>Help Text</p>
                                                     </div>
-                                                    <div class="col-md-3 hidden">
-                                                        read only checkbox
+                                                    <div id="issue_reporting_non_editable" class="col-md-3">
+                                                        <input type="checkbox" disabled="disabled" @if (Config::get('paperwork.showIssueReportingLink')) checked="checked" @endif>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <div>
-                                                            <input id="toggle_btn_1" type="checkbox" class="toggle_button">
-                                                            <label id="toggle_label_1" for="toggle_btn_1"></label>
-                                                        </div>
+                                                    <div id="issue_reporting_editable" class="col-md-3 hidden">
+                                                        <input type="checkbox" id="issue_reporting_link_switch" @if (Config::get('paperwork.showIssueReportingLink')) checked="checked" @endif>
                                                     </div>
                                                 </div>
                                             </div>
@@ -270,7 +212,7 @@
             $(".next_step").click(function(event) {
                 console.log(event);
                 console.log(event.currentTarget);
-                if($(event.currentTarget).hasClass("btn-primary") && event.target.id !== "step5") {
+                if($(event.currentTarget).hasClass("btn-primary") && event.target.id !== "step5" && event.target.id !== "step3") {
                     var currentStep = parseInt(event.currentTarget.id.replace("step", ""), 10) - 1;
                     console.log(currentStep);
                     var nextStep = currentStep + 1;
@@ -291,6 +233,34 @@
                             window.location.href = "/login";
                         }
                     });
+                }else if(event.target.id === "step3") {
+                    console.log("lola");
+                    if($("#change_config").hasClass("hidden")) {
+                        console.log("aston martin");
+                        var debug = $("#debug_mode_switch").is(":checked");
+                        var registration = $("#registration_config_switch").is(":checked");
+                        var forgot = $("#forgot_password_switch").is(":checked");
+                        var showIssue = $("#issue_reporting_link_switch").is(":checked");
+                        var data = "debug="+debug+"&registration="+registration+"&forgot_password="+forgot+"&showIssueReportingLink="+showIssue;
+                        console.log(data);
+                        $.ajax({
+                            type: "POST",
+                            url: "install/configurate",
+                            data: data,
+                            success: function() {
+                                var currentStep = 3 - 1;
+                                console.log(currentStep);
+                                var nextStep = currentStep + 1;
+                                console.log(nextStep);
+                                $("ul.form li").eq(currentStep).fadeOut("slow");
+                                console.log($("ul.form li").eq(currentStep));
+                                $("ul.form li").eq(currentStep).addClass("hidden");
+                                $("ul.form li").eq(nextStep).removeClass("hidden");
+                                $("ul.form li").eq(nextStep).fadeIn("slow");
+                                $("#progress_bar").css("width", ((nextStep / 5) * 100) + "%");
+                            }
+                        });
+                    }
                 }
             });
             $("#connection_check").click(function() {
@@ -363,6 +333,17 @@
                         $("#progress_bar").css("width", ((nextStep / 5) * 100) + "%");
                     }
                 });
+            });
+            $("#change_config").click(function() {
+                $("#change_config").addClass("hidden");
+                $("#debug_non_editable").addClass("hidden");
+                $("#registration_non_editable").addClass("hidden");
+                $("#forgot_password_non_editable").addClass("hidden");
+                $("#issue_reporting_non_editable").addClass("hidden");
+                $("#debug_editable").removeClass("hidden");
+                $("#registration_editable").removeClass("hidden");
+                $("#forgot_password_editable").removeClass("hidden");
+                $("#issue_reporting_editable").removeClass("hidden");
             });
         </script>
     </body>
