@@ -73,16 +73,13 @@ class UserController extends BaseController
                 return Redirect::back()
                            ->withErrors(["password" => [Lang::get('messages.account_creation_failed')]]);
             }else{
-                //return var_dump("password");
                 return PaperworkHelpers::apiResponse(PaperworkHelpers::STATUS_ERROR, ["password" => [Lang::get('messages.account_creation_failed')]]);
             }
         } else {
             if(!(Input::get('frominstaller'))) {
                 return Redirect::back()->withInput()->withErrors($validator);
             }else{
-                //return var_dump($validator->failed());
                 return PaperworkHelpers::apiResponse(PaperworkHelpers::STATUS_ERROR, $validator->failed());
-                //return PaperworkHelpers::apiResponse(PaperworkHelpers::STATUS_ERROR, array(View::make('partials/registration-form')));
             }
         }
     }

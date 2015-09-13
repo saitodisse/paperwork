@@ -12,7 +12,6 @@
 |-------------------------------------------------------------------------
 */
 if (!file_exists("../app/storage/db_settings") && !extension_loaded("sqlite3")) {
-    //die(var_dump(extension_loaded('sqlite3')));
     include("setup_no_sqlite.php");
     die();
 }

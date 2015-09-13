@@ -9,7 +9,6 @@
         
         <meta name="theme-color" content="#03a9f4">
         <meta name="apple-mobile-web-app-status-bar-style" content="#03a9f4">
-        <!-- <link rel="apple-touch-startup-image" href=""> -->
         <link rel="apple-touch-icon" sizes="60x60" href="images/paperwork-icons/favicon-60x60.png">
         <link rel="apple-touch-icon" sizes="76x76" href="images/paperwork-icons/favicon-76x76.png">
         <link rel="apple-touch-icon" sizes="128x128" href="images/paperwork-icons/favicon-128x128.png">
@@ -21,31 +20,6 @@
         <title>Paperwork</title>
 
         <link rel="stylesheet" type="text/css" href="css/themes/paperwork-v1.min.css">
-        <style>
-            html, body {
-                height:100%;
-                margin-top: -1px;
-            }
-            body {
-                position: relative;
-            }
-            ul.form li {
-                margin:0;
-                padding:0;
-                list-style:none;
-                position:abolsute;
-                width:100%;
-            }
-            .next_step {
-                padding: 20px 60px;
-                font-size: 24px;
-                position: absolute;
-                bottom: 5%;
-                right: 5%;
-                left: 5%;
-                width:100%;
-            }
-        </style>
     </head>
     
     <body>
