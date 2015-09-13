@@ -175,14 +175,15 @@ $array = array(
 
 );
 
-$configString = file_get_contents(storage_path()."/paperwork_settings");
-$configLines = explode("\r\n", $configString);
-foreach($configLines as $configLine) {
-    $configLineArray = explode(": ", $configLine);
-    if(isset($array[$configLineArray[0]])) {
-        $key = $configLineArray[0];
-        $array[$key] = $configLineArray[1];
+if(File::exists(storage_path()."/paperwork_settings")) {
+    $configString = file_get_contents(storage_path()."/paperwork_settings");
+    $configLines = explode("\r\n", $configString);
+    foreach($configLines as $configLine) {
+        $configLineArray = explode(": ", $configLine);
+        if(isset($array[$configLineArray[0]])) {
+            $key = $configLineArray[0];
+            $array[$key] = $configLineArray[1];
+        }
     }
 }
-
 return $array;

@@ -82,6 +82,7 @@ class UserController extends BaseController
             }else{
                 //return var_dump($validator->failed());
                 return PaperworkHelpers::apiResponse(PaperworkHelpers::STATUS_ERROR, $validator->failed());
+                //return PaperworkHelpers::apiResponse(PaperworkHelpers::STATUS_ERROR, array(View::make('partials/registration-form')));
             }
         }
     }

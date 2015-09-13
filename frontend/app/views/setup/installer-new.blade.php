@@ -19,8 +19,8 @@
                 width:100%;
             }
             .next_step {
-                padding: 20px 60px;
-                font-size: 24px;
+                /*padding: 20px 60px;
+                font-size: 24px;*/
                 position: absolute;
                 bottom: 5%;
                 right: 5%;
@@ -183,6 +183,9 @@
                                     <li class="form-group hidden">
                                         <h1>Registering your first user account</h1>
                                         <p>This account will serve as the administrator. </p>
+                                        <div id="error_div" class="hidden" style="color:red">
+                                        
+                                        </div>
                                         @include("partials/registration-form", array('back' => false, 'frominstaller' => true))
                                         <!--<button class="btn btn-primary btn-lg next_step" id="step4">Next</button>-->
                                     </li>
@@ -229,8 +232,11 @@
                     $.ajax({
                         type: "POST",
                         url: "install/finish",
-                        finished: function() {
+                        success: function() {
                             window.location.href = "/login";
+                        },
+                        finished: function() {
+                            //window.location.href = "/login";
                         }
                     });
                 }else if(event.target.id === "step3") {
@@ -260,6 +266,17 @@
                                 $("#progress_bar").css("width", ((nextStep / 5) * 100) + "%");
                             }
                         });
+                    }else{
+                        var currentStep = 3 - 1;
+                        console.log(currentStep);
+                        var nextStep = currentStep + 1;
+                        console.log(nextStep);
+                        $("ul.form li").eq(currentStep).fadeOut("slow");
+                        console.log($("ul.form li").eq(currentStep));
+                        $("ul.form li").eq(currentStep).addClass("hidden");
+                        $("ul.form li").eq(nextStep).removeClass("hidden");
+                        $("ul.form li").eq(nextStep).fadeIn("slow");
+                        $("#progress_bar").css("width", ((nextStep / 5) * 100) + "%");
                     }
                 }
             });
@@ -331,6 +348,34 @@
                         $("ul.form li").eq(nextStep).removeClass("hidden");
                         $("ul.form li").eq(nextStep).fadeIn("slow");
                         $("#progress_bar").css("width", ((nextStep / 5) * 100) + "%");
+                    },
+                    error: function(jqXHR) {
+                        alert("Error");
+                        console.log(jqXHR);
+                        console.log(jqXHR.responseJSON.errors);
+                        var text = "Registration failed because of an error in these fields: ";
+                        $.each(jqXHR.responseJSON.errors, function(index, value) {
+                            console.log(index);
+                            console.log(value);
+                            text += index.charAt(0).toUpperCase() + index.substring(1) + ", ";
+                        });
+                        $("#error_div").text(text);
+                        $("#error_div").removeClass("hidden");
+                        $("#step5_submit").unbind("click");
+                        $("#step5_submit").click(function() {
+                            var currentStep = 4 - 1;
+                            console.log(currentStep);
+                            var nextStep = currentStep + 1;
+                            console.log(nextStep);
+                            $("ul.form li").eq(currentStep).fadeOut("slow");
+                            console.log($("ul.form li").eq(currentStep));
+                            $("ul.form li").eq(currentStep).addClass("hidden");
+                            $("ul.form li").eq(nextStep).removeClass("hidden");
+                            $("ul.form li").eq(nextStep).fadeIn("slow");
+                            $("#progress_bar").css("width", ((nextStep / 5) * 100) + "%");                       
+                        });
+                        $("#step5_submit").attr("value", "Continue without registering");
+                        $("#step5_submit").attr("id", "");
                     }
                 });
             });
